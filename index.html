@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Inspirational Quotes</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  #quoteList {
+    list-style: none;
+    padding: 0;
+  }
+  #quoteList li {
+    background: white;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .admin-area {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+  }
+  textarea {
+    width: 90%;
+    height: 60px;
+  }
+  button {
+    padding: 8px 12px;
+    margin-top: 8px;
+    cursor: pointer;
+    border: none;
+    background: #4caf50;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  button:hover {
+    background: #45a049;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>💡 Inspirational Quotes</h1>
+  <p>A collection of powerful quotes to motivate & inspire</p>
+  <button onclick="showAdmin()">Add A Quote (Admin)</button>
+</div>
+
+<ul id="quoteList"></ul>
+
+<div class="admin-area" id="adminArea">
+  <textarea id="newQuote" placeholder="Type your quote here..."></textarea><br>
+  <button onclick="saveNewQuote()">Save Quote</button>
+</div>
+
+<script>
+  // SECRET ADMIN PASSWORD — change it!
+  const ADMIN_PASS = "letmein123";
+
+  // Load stored quotes or default list
+  let quotes = JSON.parse(localStorage.getItem("allQuotes")) || [
+    "Believe in yourself and all that you are.",
+    "Small steps every day lead to big changes.",
+    "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    "Your only limit is your mind.",
+    "Stay positive, work hard, make it happen."
+  ];
+
+  function displayQuotes() {
+    const list = document.getElementById("quoteList");
+    list.innerHTML = "";
+    quotes.forEach(q => {
+      const li = document.createElement("li");
+      li.textContent = q;
+      list.appendChild(li);
+    });
+  }
+
+  function showAdmin() {
+    const pass = prompt("Enter admin password:");
+    if (pass === ADMIN_PASS) {
+      document.getElementById("adminArea").style.display = "block";
+    } else {
+      alert("Wrong password!");
+    }
+  }
+
+  function saveNewQuote() {
+    const text = document.getElementById("newQuote").value.trim();
+    if (text !== "") {
+      quotes.push(text);
+      localStorage.setItem("allQuotes", JSON.stringify(quotes));
+      document.getElementById("newQuote").value = "";
+      displayQuotes();
+      alert("Quote added!");
+    }
+  }
+
+  displayQuotes();
+</script>
+
+</body>
+</html>
